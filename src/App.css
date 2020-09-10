@@ -36,3 +36,43 @@
     transform: rotate(360deg);
   }
 }
+
+.card-details-container {
+  width: inherit;
+  height: inherit;
+  position: relative;
+  text-align: center;
+}
+
+.card-detail-image {
+  object-fit: contain;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #333333;
+  color: white;
+}
+
+.card-details-container:hover .overlay {
+  opacity: 0.95;
+}
+
+.card-details-container:hover .card-detail-image {
+  opacity: 0.1;
+}
