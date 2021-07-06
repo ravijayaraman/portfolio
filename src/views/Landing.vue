@@ -19,7 +19,7 @@
           and
           <a
             class="link-container-sm"
-            href="www.linkedin.com/in/jayaraman-ravi"
+            href="https://www.linkedin.com/in/jayaraman-ravi"
             target="_blank"
             ><h1><b-icon-linkedin></b-icon-linkedin></h1
           ></a>
