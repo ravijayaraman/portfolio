@@ -1,11 +1,17 @@
 <template>
-  <div class="row h-100 d-flex align-items-center px-3">
+  <div class="row align-items-center px-3 py-0 my-0">
     <div class="col img-container">
       <img alt="Profile" src="../assets/landing-profile.png" />
     </div>
     <div class="col">
       <div class="row">
-        <h1>Hey &#x270B; there, I'm Ravi Jayaraman</h1>
+        <h1>
+          Hey
+          <button class="button-container-wave mx-0 px-0">
+            &#x270B;
+          </button>
+          there, I'm Ravi Jayaraman
+        </h1>
         <h2>
           Software Engineer, passionate about open source work to support
           community. Get in touch to know me better, keen to know about my work?
@@ -14,14 +20,14 @@
             class="link-container-sm"
             href="https://github.com/ravijayaraman"
             target="_blank"
-            ><h1><b-icon-github></b-icon-github></h1
+            ><h3><b-icon-github></b-icon-github></h3
           ></a>
           and
           <a
             class="link-container-sm"
             href="https://www.linkedin.com/in/jayaraman-ravi"
             target="_blank"
-            ><h1><b-icon-linkedin></b-icon-linkedin></h1
+            ><h3><b-icon-linkedin></b-icon-linkedin></h3
           ></a>
           profile or download my resume.
         </h2>
@@ -39,6 +45,10 @@
 </template>
 
 <style scoped>
+body {
+  height: 90vh;
+}
+
 .img-container img {
   width: 100%;
   height: auto;
@@ -81,5 +91,29 @@
   border-color: #fedd64 !important;
   transition: all 0.3s ease 0s;
   transform: scale(1.2);
+}
+
+.button-container-wave {
+  text-decoration: none;
+  border: none;
+  background: none;
+  transform: rotate(-20deg);
+}
+
+.button-container-wave:hover {
+  background: transparent;
+  border: none;
+  animation: wave-hand 0.2s infinite;
+  transform: scale(1.5) rotate(-20deg);
+  animation-direction: alternate;
+}
+
+@keyframes wave-hand {
+  0% {
+    transform: scale(2) rotate(-20deg);
+  }
+  100% {
+    transform: scale(2) rotate(20deg);
+  }
 }
 </style>
