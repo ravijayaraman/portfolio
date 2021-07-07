@@ -8,7 +8,10 @@ const routes = [
   {
     path: "/",
     name: "Landing",
-    component: Landing
+    component: Landing,
+    meta: {
+      title: "Ravi Jayaraman"
+    }
   }
   // {
   //   path: "/about",

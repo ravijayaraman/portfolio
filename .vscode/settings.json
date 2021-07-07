@@ -1,0 +1,13 @@
+{
+  "eslint.options": {
+    "extensions": [
+      ".html",
+      ".js",
+      ".jsx"
+    ]
+  },
+  "java.configuration.updateBuildConfiguration": "disabled",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
