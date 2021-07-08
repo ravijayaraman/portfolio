@@ -1,23 +1,30 @@
 <template>
-  <div class="m-4 justify-content-start" @mouseenter="focusInput">
+  <div
+    class="my-4 justify-content-start"
+    @mouseenter="focusInput"
+    @mouseleave="blurInput"
+  >
     <div
       class="d-flex option-window align-items-center"
       @mouseenter="focusInput"
+      @mouseleave="blurInput"
     >
       <b-icon class="m-2" icon="circle-fill" variant="danger"></b-icon>
       <b-icon icon="circle-fill" variant="warning"></b-icon>
       <b-icon class="m-2" icon="circle-fill" variant="success"></b-icon>
     </div>
-    <div class="col command-window p-2" @mouseenter="focusInput">
+    <div
+      class="col command-window p-2"
+      @mouseenter="focusInput"
+      @mouseleave="blurInput"
+    >
       <p
         id="terminalText"
         class="text-start text-white d-flex"
         v-html="terminalText"
       ></p>
       <div class="d-flex flex-row align-items-start">
-        <p class="text-left text-white">
-          {{ currentDirectory }}
-        </p>
+        <p class="text-left text-white">~/{{ currentDirectory }}/ $</p>
         <input
           id="inputCommand"
           ref="inputCommand"
@@ -40,23 +47,101 @@ export default {
         "Hi my name is Ravi,<br> this is a terminal window you could use to browse and get information about my work. Let's get started, if you know basic linux commands feel free to go ahead, if not then you can type 'help' command to know more. Happy searching! :)",
       terminalCommands: [],
       currentCommand: "",
-      currentDirectory: "~/portfolio/ $",
-      validCommandSet: new Set(["pwd", "cat", "whoami", "cd", "ls", "help"])
+      hashDirectory: {
+        portfolio: {
+          about: {
+            "about.txt":
+              "Software Engineer, passionate about open source work to support community. Get in touch to know me better, let grab a coffee and discuss!"
+          },
+          projects: {
+            "projects.txt":
+              "Software Engineer, passionate about open source work to support community. Get in touch to know me better, let grab a coffee and discuss!"
+          },
+          education: {
+            "The_University_of_Sydney.txt":
+              "Master of Information technology and Master of Information technology management, major in Data management and Analytics.<br>WAM: 74.5"
+          }
+        }
+      },
+      currentDirectory: "",
+      currentDirectoryChildren: {},
+      hashCommand: {
+        pwd: {
+          helpText: "Display the present working directory"
+        },
+        cat: {
+          helpText: "Display the information present in the file",
+          output: commands => {
+            (commands = typeof commands === typeof [] ? commands[1] : commands),
+              this.currentDirectoryChildren;
+            return `<br>${this.currentDirectoryChildren[commands]}<br>`;
+          }
+        },
+        whoami: {
+          helpText: "Display summary for Ravi Jayaraman"
+        },
+        cd: {
+          helpText: "Change directory",
+          output: commands => {
+            return this.getCurrentDirectory(
+              typeof commands === typeof [] ? commands[1] : commands,
+              this.currentDirectoryChildren
+            )
+              .then(({ directory, children }) => {
+                this.currentDirectory += `/${directory}`;
+                this.currentDirectoryChildren = children;
+                return `switched to ${directory} directory`;
+              })
+              .catch(error => this.errorHandler(error));
+          }
+        },
+        ls: {
+          output: () => {
+            let strOutput = "";
+            Object.keys(this.currentDirectoryChildren).forEach(key => {
+              strOutput += `<br>${key}/`;
+            });
+            return strOutput;
+          },
+          helpText: "List all the filenames within the current directory"
+        },
+        help: {
+          output: () => {
+            let strOutput = "";
+            Object.entries(this.hashCommand).forEach(command => {
+              const [key, { helpText }] = command;
+              strOutput += helpText
+                ? `<br>&emsp;&emsp;${key}&emsp;&emsp;${helpText}`
+                : "";
+            });
+            return strOutput;
+          }
+        }
+      },
+      validCommandSet: {}
     };
   },
   mounted() {
-    this.focusInput();
+    this.validCommandSet = new Set(Object.keys(this.hashCommand));
+    this.getCurrentDirectory().then(({ directory, children }) => {
+      this.currentDirectory += directory;
+      this.currentDirectoryChildren = children;
+    });
   },
   computed: {},
   methods: {
     focusInput() {
       this.$refs.inputCommand.focus();
     },
+    blurInput() {
+      this.$refs.inputCommand.blur();
+    },
     async processCommand() {
+      this.terminalCommands.push(this.currentCommand);
       await this.validateCommand()
         .then(commands => {
           this.parseCommandOutput(commands).then(output => {
-            this.terminalText += `<br>${this.currentDirectory} ${this.currentCommand} <br>${output}`;
+            this.terminalText += `<br>~/${this.currentDirectory}/ $ ${this.currentCommand} <br>${output}`;
           });
         })
         .catch(error => {
@@ -69,7 +154,11 @@ export default {
         });
     },
     parseCommandOutput(commands) {
-      return Promise.resolve(commands);
+      return Promise.resolve(
+        this.hashCommand[
+          typeof commands === typeof [] ? commands[0] : commands
+        ].output(commands)
+      );
     },
     validateCommand() {
       return new Promise((resolve, reject) => {
@@ -86,7 +175,10 @@ export default {
             } takes only one arguement you have passed ${commands.length -
               1}, try typing 'help' for more information`
           );
-        } else if (commands.length === 1) {
+        } else if (
+          !["help", "whoami", "ls"].includes(commands[0]) &&
+          commands.length === 1
+        ) {
           reject(
             `No arguements passed to command ${commands[0]}, try typing 'help' for more information`
           );
@@ -95,8 +187,30 @@ export default {
       });
     },
     errorHandler(error) {
-      this.terminalText += `<br>${this.currentDirectory} ${this.currentCommand} <br>${error}`;
+      this.terminalText += `<br>~/${this.currentDirectory}/ $ ${this.currentCommand} <br>${error}`;
       this.currentCommand = "";
+    },
+    getCurrentDirectory(directoryName, hashDirectory) {
+      return new Promise((resolve, reject) => {
+        console.log(directoryName, hashDirectory);
+        if (!(directoryName && hashDirectory)) {
+          resolve({
+            directory: "portfolio",
+            children: this.hashDirectory.portfolio
+          });
+        }
+        console.log(Object.hasOwnProperty.call(hashDirectory, directoryName));
+        if (Object.hasOwnProperty.call(hashDirectory, directoryName)) {
+          resolve({
+            directory: directoryName,
+            children: hashDirectory[directoryName]
+          });
+        } else {
+          reject(
+            `${directoryName} not found! Try using 'ls' command to list all the content of the current folder.`
+          );
+        }
+      });
     }
   }
 };
@@ -126,8 +240,7 @@ input:focus {
 }
 
 #terminalText {
-  height: auto;
-  max-height: 200px;
+  height: 50vh;
   overflow-y: scroll;
 }
 

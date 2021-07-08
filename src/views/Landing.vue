@@ -1,13 +1,17 @@
 <template>
   <div class="col overflow-hidden-container">
-    <div class="row align-items-center w-100 px-3 py-0 my-0">
+    <div class="row align-items-center w-100">
       <div
         @mouseover="imageHover = true"
         @mouseleave="imageHover = false"
         :class="getComputedImageClass"
         class="col img-container"
       >
-        <img alt="Profile" src="../assets/landing-profile.png" />
+        <img
+          :class="getImageFilterClass"
+          alt="Profile"
+          src="../assets/landing-profile.png"
+        />
       </div>
       <div class="col">
         <div
@@ -16,45 +20,59 @@
           :class="getComputedTextClass"
           class="row"
         >
-          <h1>
-            Hey
-            <button class="button-container-wave mx-0 px-0">
-              &#x270B;
-            </button>
-            there, I'm Ravi Jayaraman
-          </h1>
-          <h3>
-            Software Engineer, passionate about open source work to support
-            community. Get in touch to know me better, keen to know about my
-            work? Check out my
-            <a
-              class="link-container-sm"
-              href="https://github.com/ravijayaraman"
-              target="_blank"
-              ><h3><b-icon-github></b-icon-github></h3
-            ></a>
-            and
-            <a
-              class="link-container-sm"
-              href="https://www.linkedin.com/in/jayaraman-ravi"
-              target="_blank"
-              ><h3><b-icon-linkedin></b-icon-linkedin></h3
-            ></a>
-            profile or download my resume.
-          </h3>
+          <div v-if="isInteractive">
+            <terminal />
+          </div>
+          <div v-else>
+            <h1>
+              Hey
+              <button class="button-container-wave mx-0 px-0">
+                &#x270B;
+              </button>
+              there, I'm Ravi Jayaraman
+            </h1>
+            <h3>
+              Software Engineer, passionate about open source work to support
+              community. Get in touch to know me better, keen to know about my
+              work? Check out my
+              <a
+                class="link-container-sm"
+                href="https://github.com/ravijayaraman"
+                target="_blank"
+                ><h3><b-icon-github></b-icon-github></h3
+              ></a>
+              and
+              <a
+                class="link-container-sm"
+                href="https://www.linkedin.com/in/jayaraman-ravi"
+                target="_blank"
+                ><h3><b-icon-linkedin></b-icon-linkedin></h3
+              ></a>
+              profile or download my resume.
+            </h3>
+          </div>
         </div>
-        <div class="row">
+        <div class="d-flex align-items-center my-4">
           <a
-            class="link-container-lg mx-auto my-4"
+            v-if="!isInteractive"
+            class="d-flex link-container-lg mx-auto"
             href="https://drive.google.com/file/d/1e8_d1G6BRtdQKDoyuVegVUAPKyTWLgzd/view?usp=sharing"
             target="_blank"
-            ><h2>Resume</h2></a
+            ><h3>Resume</h3></a
           >
+          <button
+            @click="toggleInteractive"
+            class="d-flex link-container-lg align-items-center mx-auto"
+          >
+            <h3>
+              {{
+                isInteractive ? "Go back" : "Switch to interactive terminal "
+              }}
+            </h3>
+            <h3 class="text-blink p-0">></h3>
+          </button>
         </div>
       </div>
-    </div>
-    <div class="row w-50 ms-auto me-5 terminal-container">
-      <terminal />
     </div>
   </div>
 </template>
@@ -74,7 +92,8 @@ export default {
       xParent: 0,
       yParent: 0,
       hover: false,
-      hideCursor: true
+      hideCursor: true,
+      isInteractive: false
     };
   },
   mounted() {},
@@ -84,25 +103,21 @@ export default {
     },
     getComputedImageClass() {
       return this.imageHover ? "active" : "inactive";
+    },
+    getImageFilterClass() {
+      return this.isInteractive ? "img-filter" : "";
+    }
+  },
+  methods: {
+    toggleInteractive() {
+      this.isInteractive = !this.isInteractive;
     }
   }
 };
 </script>
 
 <style scoped>
-.terminal-container {
-  position: absolute;
-  right: 0;
-  top: 80vh;
-}
-
-.terminal-container:hover {
-  transition: all 0.3s ease;
-  top: 60vh;
-}
-
 .overflow-hidden-container {
-  overflow-y: hidden;
   height: 100vh;
 }
 
@@ -117,17 +132,23 @@ export default {
 }
 
 .img-container img {
+  transition: all 1s ease 0s;
   width: 95%;
   height: auto;
+}
+
+.img-filter {
+  transition: all 1s ease 0s;
+  filter: grayscale(100%);
 }
 
 .link-container-lg {
   color: #000000 !important;
   text-decoration: none;
   background: transparent;
-  padding: 20px;
+  padding: 15px;
   border-radius: 10px;
-  border: 4px solid #494949 !important;
+  border: 3px solid #494949 !important;
   display: inline-block;
   transition: all 0.3s ease 0s;
   width: auto;
@@ -139,7 +160,7 @@ export default {
   border-radius: 30px;
   border-color: #fedd64 !important;
   transition: all 0.3s ease 0s;
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .link-container-sm {
@@ -181,6 +202,19 @@ export default {
   }
   100% {
     transform: scale(2) rotate(20deg);
+  }
+}
+
+.text-blink {
+  animation: text-blink 0.3s infinite alternate;
+}
+
+@keyframes text-blink {
+  from {
+    color: transparent;
+  }
+  to {
+    color: #000000;
   }
 }
 </style>
