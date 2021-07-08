@@ -27,7 +27,7 @@
             <h1>
               Hey
               <button class="button-container-wave mx-0 px-0">
-                &#x270B;
+                &#128075;
               </button>
               there, I'm Ravi Jayaraman
             </h1>
@@ -185,14 +185,13 @@ export default {
   text-decoration: none;
   border: none;
   background: none;
-  transform: rotate(-20deg);
 }
 
 .button-container-wave:hover {
   background: transparent;
   border: none;
-  animation: wave-hand 0.2s infinite;
-  transform: scale(1.5) rotate(-20deg);
+  animation: wave-hand 0.3s infinite;
+  transform: scale(1.5) rotate(-30deg);
   animation-direction: alternate;
 }
 
