@@ -185,22 +185,25 @@ export default {
   text-decoration: none;
   border: none;
   background: none;
+  animation: wave-hand 0.2s 5;
+  transform: scale(1.3);
+  animation-direction: alternate;
 }
 
 .button-container-wave:hover {
   background: transparent;
   border: none;
-  animation: wave-hand 0.3s infinite;
-  transform: scale(1.5) rotate(-30deg);
+  animation: wave-hand 0.2s infinite;
+  transform: scale(1.3);
   animation-direction: alternate;
 }
 
 @keyframes wave-hand {
   0% {
-    transform: scale(2) rotate(-20deg);
+    transform: scale(1.3) rotate(-10deg);
   }
   100% {
-    transform: scale(2) rotate(20deg);
+    transform: scale(1.3) rotate(30deg);
   }
 }
 

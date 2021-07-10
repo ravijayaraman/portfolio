@@ -10,7 +10,6 @@ someOtherfoler/
 *.o
 *.so
 *.so
-*.DS_Store
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source
@@ -23,3 +22,4 @@ someOtherfoler/
 *.rar
 *.tar
 *.zip
+.DS_Store
