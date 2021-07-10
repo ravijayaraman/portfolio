@@ -338,7 +338,7 @@ input:focus {
 }
 
 #terminalText {
-  height: 50vh;
+  height: 40vh;
   overflow-y: scroll;
 }
 
