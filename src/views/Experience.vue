@@ -61,6 +61,7 @@
       <img
         :class="getImageFilterClass"
         src="../assets/syd-uni-1.png"
+        rel="preload"
         @mouseover="imageHover = true"
         @mouseleave="imageHover = false"
       />
@@ -72,6 +73,7 @@
       <img
         :class="getImageFilterClass"
         src="../assets/syd-uni-4.png"
+        rel="preload"
         @mouseover="imageHover = true"
         @mouseleave="imageHover = false"
       />

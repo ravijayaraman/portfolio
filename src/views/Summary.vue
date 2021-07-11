@@ -10,6 +10,7 @@
         :class="getImageFilterClass"
         alt="Profile"
         src="../assets/landing-profile.png"
+        rel="preload"
       />
     </div>
     <div class="col animate-slide-in-from-bottom">
