@@ -1,5 +1,5 @@
 <template>
-  <div class="row align-items-center w-100">
+  <div class="d-flex align-items-center">
     <div
       @mouseover="imageHover = true"
       @mouseleave="imageHover = false"
@@ -52,7 +52,7 @@
           </h3>
         </div>
       </div>
-      <div class="d-flex align-items-center my-4">
+      <div class="d-flex align-items-center justify-content-between my-4">
         <a
           v-if="!isInteractive"
           class="d-flex link-container-lg mx-auto"
