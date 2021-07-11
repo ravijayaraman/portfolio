@@ -290,14 +290,12 @@ export default {
     },
     getCurrentDirectory(directoryName, hashDirectory) {
       return new Promise((resolve, reject) => {
-        console.log(directoryName, hashDirectory);
         if (!(directoryName && hashDirectory)) {
           resolve({
             directory: "portfolio",
             children: this.hashDirectory.portfolio
           });
         }
-        console.log(Object.hasOwnProperty.call(hashDirectory, directoryName));
         if (Object.hasOwnProperty.call(hashDirectory, directoryName)) {
           resolve({
             directory: directoryName,
