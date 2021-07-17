@@ -57,7 +57,7 @@ jobs:
       - run: npm run lint
 
   # This workflow contains a single job called "build"
-  test:
+  deploy:
     needs: test
     # name of the deployment
     name: Deploy - Master Environment
