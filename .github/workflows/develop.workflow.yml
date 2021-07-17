@@ -5,7 +5,8 @@ name: Portfolio Deployment Workflow - Develop Environment
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
+  pull_request:
+    types: [ assigned, opened, synchronize, reopened ]
     branches: [ develop ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -22,6 +23,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@master
       - run: npm install
       - run: git config user.name "Ravi Jayaraman" && git config user.email "ravijayaraman13894@gmail.com"
