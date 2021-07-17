@@ -39,4 +39,4 @@ jobs:
       - name: Set Creds
         run: git config user.name "Ravi Jayaraman" && git config user.email "ravijayaraman13894@gmail.com"
       - name: Deploy
-        run: npm run deploy
+        run: npm run gh-pages-deploy
