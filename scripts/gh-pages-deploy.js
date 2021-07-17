@@ -18,7 +18,7 @@ const e_rocket = emoji.get("rocket");
     console.log(`${e_arrows} ${chalk.yellow("Pushing...")}`);
     await execa("git", ["push", "origin", "HEAD:gh-pages", "--force"]);
     await execa("rm", ["-r", folderName]);
-    await execa("git", ["checkout", "-f", "master"]);
+    await execa("git", ["checkout", "-f", "develop"]);
     await execa("git", ["branch", "-D", "gh-pages"]);
     console.log(
       `${e_rocket} ${chalk.green("Successfully deployed")} ${e_rocket}`

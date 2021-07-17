@@ -22,21 +22,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
       - uses: actions/setup-node@master
       - run: npm install
       - run: git config user.name "Ravi Jayaraman" && git config user.email "ravijayaraman13894@gmail.com"
       - run: npm run lint
       - run: npm run build
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: "develop"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_label: "feature, automated pr"
-          pr_title: "$GITHUB_CONTEXT"
