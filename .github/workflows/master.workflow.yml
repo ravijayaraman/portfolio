@@ -11,10 +11,9 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  setup:
     # name of the deployment
-    name: Portfolio Deployment Workflow - Master Environment
+    name: Setup - Master Environment
     
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -26,7 +25,47 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@master
-      - run: npm install
       - run: git config user.name "Ravi Jayaraman" && git config user.email "ravijayaraman13894@gmail.com"
+      
+  # This workflow contains a single job called "build"
+  install:
+    # name of the deployment
+    name: Install NPM - Master Environment
+    
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      needs: setup
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - run: npm install
+
+  # This workflow contains a single job called "build"
+  test:
+    # name of the deployment
+    name: Test Lint errors - Master Environment
+    
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      needs: install
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it      
       - run: npm run lint
+
+  # This workflow contains a single job called "build"
+  test:
+    # name of the deployment
+    name: Deploy - Master Environment
+    
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      needs: test
+      # Run the deploy script     
       - run: npm run gh-pages-deploy
+
