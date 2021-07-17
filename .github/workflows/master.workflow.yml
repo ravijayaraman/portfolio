@@ -29,6 +29,7 @@ jobs:
       
   # This workflow contains a single job called "build"
   install:
+    needs: setup
     # name of the deployment
     name: Install NPM - Master Environment
     
@@ -37,12 +38,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      needs: setup
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - run: npm install
 
   # This workflow contains a single job called "build"
   test:
+    needs: install
     # name of the deployment
     name: Test Lint errors - Master Environment
     
@@ -51,12 +52,13 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      needs: install
+      
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it      
       - run: npm run lint
 
   # This workflow contains a single job called "build"
   test:
+    needs: test
     # name of the deployment
     name: Deploy - Master Environment
     
@@ -65,7 +67,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      needs: test
+      
       # Run the deploy script     
       - run: npm run gh-pages-deploy
 
