@@ -8,9 +8,6 @@ on:
   push:
     branches: [ master ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -19,24 +16,13 @@ jobs:
     name: Portfolio Deployment
     
     # The type of runner that the job will run on
-    runs-on: macos-latest
-    
-    # Check for all the node version that would be compatible for this action
-    # Defining htem in a matrix for fetching later in this code
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
+    runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install packages
-        run: npm i
-      - name: Set Creds
-        run: git config user.name "Ravi Jayaraman" && git config user.email "ravijayaraman13894@gmail.com"
-      - name: Deploy
-        run: npm run gh-pages-deploy
+      - uses: actions/setup-node@master
+      - run: npm install
+      - run: git config user.name "Ravi Jayaraman" && git config user.email "ravijayaraman13894@gmail.com"
+      - run: npm run gh-pages-deploy
