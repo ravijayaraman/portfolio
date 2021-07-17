@@ -26,42 +26,10 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@master
       - run: git config user.name "Ravi Jayaraman" && git config user.email "ravijayaraman13894@gmail.com"
-      
-  # This workflow contains a single job called "build"
-  install:
-    needs: setup
-    # name of the deployment
-    name: Install NPM - Master Environment
-    
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - run: npm install
-
-  # This workflow contains a single job called "build"
-  test:
-    needs: install
-    # name of the deployment
-    name: Test Lint errors - Master Environment
-    
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it   
-      - run: echo "$install"   
-      - uses: npm run lint
-        with:
-          ref: ${{ install.steps.npm }}
 
   # This workflow contains a single job called "build"
   deploy:
-    needs: test
+    needs: setup
     # name of the deployment
     name: Deploy - Master Environment
     
@@ -71,6 +39,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       
-      # Run the deploy script     
-      - run: npm run gh-pages-deploy
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it   
+      - run: npm install
+      - run: npm run lint
+      - run: npm run gh-pages-deploy   
+      
 
