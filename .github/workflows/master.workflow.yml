@@ -53,8 +53,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it      
-      - run: npm run lint
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it   
+      - run: echo "$install"   
+      - uses: npm run lint
+        with:
+          ref: ${{ install.steps.npm }}
 
   # This workflow contains a single job called "build"
   deploy:
