@@ -13,7 +13,7 @@ on:
 jobs:
   setup:
     # name of the deployment
-    name: Setup - Master Environment
+    name: Deploy - Master Environment
     
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -22,26 +22,11 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@master
       - run: git config user.name "Ravi Jayaraman" && git config user.email "ravijayaraman13894@gmail.com"
-
-  # This workflow contains a single job called "build"
-  deploy:
-    needs: setup
-    # name of the deployment
-    name: Deploy - Master Environment
-    
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it   
       - run: npm install
       - run: npm run lint
-      - run: npm run gh-pages-deploy   
+      - run: npm run gh-pages-deploy 
+       
       
 
