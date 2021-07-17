@@ -313,6 +313,11 @@ export default {
 </script>
 
 <style scoped>
+/**
+This is a scoped style for the terminal view component. 
+Mainly includes the micro-animations on user interaction like mouse hover and leave.
+Mimics the terminl view which is observed in the Unix based operating systems.
+*/
 input,
 input::before,
 input:focus,
